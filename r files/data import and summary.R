@@ -18,9 +18,22 @@ bbch4raw <- read_delim(here("data/2023_BB_CH4_raw.txt"), delim = ";", locale = l
                   runtime_s = runtime,
                   t_control_c = t_control,
                   t_gas_c = t_gas) %>%
-           slice(-1)
+           slice(-1) %>% 
+  mutate(date_time = as.POSIXct(paste(date, time))) %>% 
+  select(-1:-2)
 ## 
 
-## Mutate the data to include the hourly and daily averages
+## Mutate the data to include the hourly average
 
-bbch4daily <- 
+bbch4hourly <- bbch4raw %>%
+  mutate(hour = lubridate::hour(date_time)) %>%
+  group_by(date = as.Date(date_time)) %>%
+  filter(n() > 1) %>%
+  summarize(across(everything(), mean, na.rm = TRUE))
+##
+
+## Mutate the data to include the daily average
+bbch4daily <- bbch4raw %>%
+  mutate(date = as.Date(date_time)) %>%
+  group_by(date) %>%
+  summarize(across(everything(), mean, na.rm = TRUE))
