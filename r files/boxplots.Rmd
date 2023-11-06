@@ -1,0 +1,228 @@
+---
+title: "box plots"
+author: "Nick Decker"
+date: "2023-11-03"
+output: 
+  html_document
+---
+
+
+```{r setup, include= FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(knitr)
+library(ggplot2)
+library(lubridate)
+library(janitor)
+```
+
+
+```{r data load, message=FALSE, warning=FALSE}
+source("BB_CH4.R")
+source("BB_CO2.R")
+source("CL_CH4.R")
+source("GS_CH4.R")
+source("GS_CO2.R")
+source("MC_CH4.R")
+source("MC_CO2.R")
+```
+
+```{r remove unnecessary df, message=FALSE, warning=FALSE, ecvho=FALSE}
+rm(bbch4raw,
+   bbco2raw,
+   clch4raw,
+   gsch4raw,
+   mcch4raw,
+   mcco2raw)
+```
+
+## Back Bay plots
+```{r backbay plots, echo=FALSE}
+# Methane
+bbch4box <- 
+  ggplot() + 
+  geom_boxplot(aes(x = month, y = pch4_uatm), bbch4daily) +
+  theme_bw() +
+  labs(
+    title = expression(Back~Bay~pCH[4]),
+    x = "Month",
+    y = expression(pCH[4]~(mu*atm))
+  ) +
+  scale_x_discrete(labels = c(
+    "5" = "May",
+    "6" = "June",
+    "7" = "July",
+    "8" = "August",
+    "9" = "September"
+  )) +
+  theme(panel.grid = element_blank())
+# Carbon Dioxide
+bbco2box <- 
+  ggplot() + 
+  geom_boxplot(aes(x = month, y = pco2_uatm), bbco2daily) +
+  theme_bw() +
+  labs(
+    title = expression(Back~Bay~pCO[2]),
+    x = "Month",
+    y = expression(pCO[2]~(mu*atm))
+  ) +
+  scale_x_discrete(labels = c(
+    "5" = "May",
+    "6" = "June",
+    "7" = "July",
+    "8" = "August",
+    "9" = "September"
+  )) +
+  theme(panel.grid = element_blank())
+
+print(bbch4box)
+print(bbco2box)
+```
+
+## Clark Lake plots
+```{r clark lake plots, echo=FALSE}
+# Methane
+clch4box <- 
+  ggplot() + 
+  geom_boxplot(aes(x = month, y = ch4_uatm), clch4daily) +
+  theme_bw() +
+  labs(
+    title = expression(Clark~Lake~pCH[4]),
+    x = "Month",
+    y = expression(pCH[4]~(mu*atm))
+  ) +
+  scale_x_discrete(labels = c(
+    "5" = "May",
+    "6" = "June",
+    "7" = "July",
+    "8" = "August",
+    "9" = "September"
+  )) +
+  theme(panel.grid = element_blank())
+
+print(clch4box)
+```
+
+## Generating Station plots
+```{r gs plots, echo=FALSE}
+# Methane
+gsch4box <- 
+  ggplot() + 
+  geom_boxplot(aes(x = month, y = p_ch4_screened), gsch4daily) +
+  theme_bw() +
+  labs(
+    title = expression(Generating~Station~pCH[4]),
+    x = "Month",
+    y = expression(pCH[4]~(mu*atm))
+  ) +
+  scale_x_discrete(labels = c(
+    "1" = "January",
+    "2" = "February",
+    "3" = "March",
+    "4" = "April",
+    "5" = "May",
+    "6" = "June",
+    "7" = "July",
+    "8" = "August",
+    "9" = "September",
+    "10" = "October",
+    "11" = "November",
+    "12" = "December"
+  )) +
+  theme(panel.grid = element_blank())
+# Carbon Dioxide
+gsco2box <- 
+  ggplot() + 
+  geom_boxplot(aes(x = month, y = p_co2_screened), gsco2daily) +
+  theme_bw() +
+  labs(
+    title = expression(Generating~Station~pCO[2]),
+    x = "Month",
+    y = expression(pCO[2]~(mu*atm))
+  ) +
+  scale_x_discrete(labels = c(
+    "1" = "January",
+    "2" = "February",
+    "3" = "March",
+    "4" = "April",
+    "5" = "May",
+    "6" = "June",
+    "7" = "July",
+    "8" = "August",
+    "9" = "September",
+    "10" = "October",
+    "11" = "November",
+    "12" = "December"
+  )) +
+  theme(panel.grid = element_blank())
+
+print(gsch4box)
+print(gsco2box)
+```
+
+## Main Channel plots
+```{r main channel, echo=FALSE}
+# Methane
+mcch4box <- 
+  ggplot() + 
+  geom_boxplot(aes(x = month, y = pch4_uatm), mcch4daily) +
+  theme_bw() +
+  labs(
+    title = expression(Main~Channel~pCH[4]),
+    x = "Month",
+    y = expression(pCH[4]~(mu*atm))
+  ) +
+  scale_x_discrete(labels = c(
+    "5" = "May",
+    "6" = "June",
+    "7" = "July",
+    "8" = "August",
+    "9" = "September"
+  )) +
+  theme(panel.grid = element_blank())
+# Carbon Dioxide
+mcco2box <- 
+  ggplot() + 
+  geom_boxplot(aes(x = month, y = pco2_uatm), mcco2daily) +
+  theme_bw() +
+  labs(
+    title = expression(Main~Channel~pCO[2]),
+    x = "Month",
+    y = expression(pCO[2]~(mu*atm))
+  ) +
+  scale_x_discrete(labels = c(
+    "5" = "May",
+    "6" = "June",
+    "7" = "July",
+    "8" = "August",
+    "9" = "September"
+  )) +
+  theme(panel.grid = element_blank())
+
+print(mcch4box)
+print(mcco2box)
+```
+
+```{r save plots, message=FALSE, warning=FALSE, echo=FALSE}
+ggsave("bbch4box.pdf", path = here("output"),  plot = bbch4box)
+ggsave("bbch4box.png", path = here("output"),  plot = bbch4box)
+
+ggsave("bbco2box.pdf", path = here("output"),  plot = bbco2box)
+ggsave("bbco2box.png", path = here("output"),  plot = bbco2box)
+
+ggsave("clch4box.pdf", path = here("output"),  plot = clch4box)
+ggsave("clch4box.png", path = here("output"),  plot = clch4box)
+
+ggsave("gsch4box.pdf", path = here("output"),  plot = gsch4box)
+ggsave("gsch4box.png", path = here("output"),  plot = gsch4box)
+
+ggsave("gsco2box.pdf", path = here("output"),  plot = gsco2box)
+ggsave("gsco2box.png", path = here("output"),  plot = gsco2box)
+
+ggsave("mcch4box.pdf", path = here("output"),  plot = mcch4box)
+ggsave("mcch4box.png", path = here("output"),  plot = mcch4box)
+
+ggsave("mcco2box.pdf", path = here("output"),  plot = mcco2box)
+ggsave("mcco2box.png", path = here("output"),  plot = mcco2box)
+```
