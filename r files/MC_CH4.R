@@ -35,9 +35,16 @@ mcch4raw <- read_delim(here("data/2023_MC_CH4_raw.txt"),
 ## Mutate Data to be hourly
 mcch4hourly <- mcch4raw %>%
   group_by(month, day, hour) %>%
-  summarize(across(where(is.numeric), mean, na.rm = TRUE))
+  summarize(across(where(is.numeric), mean, na.rm = TRUE))%>% 
+  mutate(
+    year = as.integer(year),  
+    month = as.integer(month), 
+    day = as.integer(day), 
+    hour = as.integer(hour),
+    date = make_datetime(year, month, day, hour))
 
 ## Mutate Data to be Daily
 mcch4daily <- mcch4raw %>% 
   group_by(month, day) %>% 
-  summarize(across(where(is.numeric), mean, na.rm = TRUE))
+  summarize(across(where(is.numeric), mean, na.rm = TRUE)) %>% 
+  mutate(month = as.factor(month))

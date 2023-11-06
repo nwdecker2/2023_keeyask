@@ -35,10 +35,14 @@ bbch4raw <- read_delim(here("data/2023_BB_CH4_raw.txt"),
 
 bbch4hourly <- bbch4raw %>%
   group_by(month, day, hour) %>%
-  summarize(across(where(is.numeric), mean, na.rm = TRUE))
+  summarize(across(where(is.numeric), mean, na.rm = TRUE)) %>% 
+  mutate(month = as.factor(month)) %>% 
+  mutate(date = as.Date(paste(year, month, day, sep = "-")))
 ##
 
 ## Mutate the data to include the daily average
 bbch4daily <- bbch4raw %>% 
   group_by(month, day) %>% 
-  summarize(across(where(is.numeric), mean, na.rm = TRUE))
+  summarize(across(where(is.numeric), mean, na.rm = TRUE)) %>% 
+  mutate(month = as.factor(month)) %>% 
+  mutate(day = as.factor(day))
