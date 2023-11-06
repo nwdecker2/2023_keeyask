@@ -1,0 +1,165 @@
+---
+title: "scatter plots"
+author: "Nick Decker"
+date: "2023-11-03"
+output: 
+  html_document
+---
+
+```{r setup, include= FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(here)
+library(knitr)
+library(ggplot2)
+library(lubridate)
+library(janitor)
+library(scales)
+```
+
+
+```{r data load, message=FALSE, warning=FALSE, echo=FALSE}
+source("BB_CH4.R")
+source("BB_CO2.R")
+source("CL_CH4.R")
+source("GS_CH4.R")
+source("GS_CO2.R")
+source("MC_CH4.R")
+source("MC_CO2.R")
+```
+
+```{r remove unnecessary df, message=FALSE, warning=FALSE, echo=FALSE}
+rm(bbch4raw,
+   bbco2raw,
+   clch4raw,
+   gsch4raw,
+   mcch4raw,
+   mcco2raw)
+```
+
+## Back Bay plots
+```{r backbay plots}
+# Methane
+bbch4point <- 
+bbch4hourly %>% 
+  ggplot() +
+  geom_point(aes(x = date, y = pch4_uatm)) +
+  theme_bw()+
+  labs(
+    title = expression(Back~Bay~pCH[4]),
+    x = "Date",
+    y = expression(pCH[4]~(mu*atm))
+  ) 
+# Carbon Dioxide
+bbco2point <- 
+bbco2hourly %>% 
+  ggplot() +
+  geom_point(aes(x = date, y = pco2_uatm)) +
+  theme_bw()+
+  labs(
+    title = expression(Back~Bay~pCO[2]),
+    x = "Date",
+    y = expression(pCO[2]~(mu*atm))
+  ) 
+
+print(bbch4point)
+print(bbco2point)
+```
+
+## Clark Lake plots
+```{r clark lake plots, echo=FALSE}
+# Methane
+clch4point <- 
+clch4hourly %>% 
+  ggplot() +
+  geom_point(aes(x = date, y = ch4_uatm)) +
+  theme_bw()+
+  labs(
+    title = expression(Clark~Lake~pCH[4]),
+    x = "Date",
+    y = expression(pCH[4]~(mu*atm))
+  ) 
+
+print(clch4point)
+```
+
+## Generating Station plots
+```{r gs plots, echo=FALSE}
+# Methane
+gsch4point <- 
+gsch4hourly %>% 
+  ggplot() +
+  geom_point(aes(x = date, y = p_ch4_screened)) +
+  theme_bw()+
+  labs(
+    title = expression(Generating~Station~pCH[4]),
+    x = "Date",
+    y = expression(pCH[4]~(mu*atm))
+  ) 
+# Carbon Dioxide
+gsco2point <- 
+gsco2hourly %>% 
+  ggplot() +
+  geom_point(aes(x = date, y = p_co2_screened)) +
+  theme_bw()+
+  labs(
+    title = expression(Generating~Station~pCO[2]),
+    x = "Date",
+    y = expression(pCO[2]~(mu*atm))
+  )
+
+print(gsch4point)
+print(gsco2point)
+```
+
+## Main Channel plots
+```{r main channel, echo=FALSE}
+# Methane
+mcch4point <- 
+mcch4hourly %>% 
+  ggplot() +
+  geom_point(aes(x = date, y = pch4_uatm)) +
+  theme_bw()+
+  labs(
+    title = expression(Main~Channel~pCH[4]),
+    x = "Date",
+    y = expression(pCH[4]~(mu*atm))
+  ) 
+# Carbon Dioxide
+mcco2point <- 
+mcco2hourly %>% 
+  ggplot() +
+  geom_point(aes(x = date, y = pco2_uatm)) +
+  theme_bw()+
+  labs(
+    title = expression(Main~Channel~pCO[2]),
+    x = "Date",
+    y = expression(pCO[2]~(mu*atm))
+  )
+
+print(mcch4point)
+print(mcco2point)
+```
+
+```{r save plots, message=FALSE, warning=FALSE, echo=FALSE}
+ggsave("bbch4point.pdf", path = here("output"),  plot = bbch4point)
+ggsave("bbch4point.png", path = here("output"),  plot = bbch4point)
+
+ggsave("bbco2point.pdf", path = here("output"),  plot = bbco2point)
+ggsave("bbco2point.png", path = here("output"),  plot = bbco2point)
+
+ggsave("clch4point.pdf", path = here("output"),  plot = clch4point)
+ggsave("clch4point.png", path = here("output"),  plot = clch4point)
+
+ggsave("gsch4point.pdf", path = here("output"),  plot = gsch4point)
+ggsave("gsch4point.png", path = here("output"),  plot = gsch4point)
+
+ggsave("gsco2point.pdf", path = here("output"),  plot = gsco2point)
+ggsave("gsco2point.png", path = here("output"),  plot = gsco2point)
+
+ggsave("mcch4point.pdf", path = here("output"),  plot = mcch4point)
+ggsave("mcch4point.png", path = here("output"),  plot = mcch4point)
+
+ggsave("mcco2point.pdf", path = here("output"),  plot = mcco2point)
+ggsave("mcco2point.png", path = here("output"),  plot = mcco2point)
+```
