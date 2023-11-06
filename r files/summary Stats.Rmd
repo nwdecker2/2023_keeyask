@@ -1,0 +1,97 @@
+---
+title: "summary stats"
+author: "Nick Decker"
+date: "2023-11-03"
+output: 
+  html_document
+---
+
+```{r setup, include= FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(here)
+library(knitr)
+library(ggplot2)
+library(lubridate)
+library(janitor)
+library(scales)
+library(openxlsx)
+```
+
+
+```{r data load, message=FALSE, warning=FALSE, echo=FALSE}
+source("BB_CH4.R")
+source("BB_CO2.R")
+source("CL_CH4.R")
+source("GS_CH4.R")
+source("GS_CO2.R")
+source("MC_CH4.R")
+source("MC_CO2.R")
+```
+
+```{r remove unnecessary df, message=FALSE, warning=FALSE, echo=FALSE}
+rm(bbch4raw,
+   bbco2raw,
+   clch4raw,
+   gsch4raw,
+   mcch4raw,
+   mcco2raw)
+```
+
+## Back Bay plots
+```{r backbay plots}
+summaries <- createWorkbook()
+
+# Methane
+ bbch4hourly <- summary(bbch4hourly)
+# Carbon Dioxide
+ bbco2hourly <- summary(bbco2hourly)
+ 
+```
+
+## Clark Lake plots
+```{r clark lake plots, echo=FALSE}
+# Methane
+clch4daily <- summary(clch4daily)
+clch4hourly <- summary(clch4hourly)
+```
+
+## Generating Station plots
+```{r gs plots, echo=FALSE}
+# Methane
+ gsch4hourly <- summary(gsch4hourly)
+# Carbon Dioxide
+ gsco2hourly <- summary(gsco2hourly)
+ 
+```
+
+## Main Channel plots
+```{r main channel, echo=FALSE}
+# Methane
+ mcch4hourly <- summary(mcch4hourly)
+# Carbon Dioxide
+ mcco2hourly <- summary(mcco2hourly)
+ 
+```
+
+```{r save workbook}
+
+addWorksheet(summaries, sheetName = "bbch4")
+writeData(summaries, sheet = "bbch4", x = bbch4hourly)
+addWorksheet(summaries, sheetName = "bbco2")
+writeData(summaries, sheet = "bbco2", x = bbco2hourly)
+addWorksheet(summaries, sheetName = "clch4")
+writeData(summaries, sheet = "clch4", x = clch4hourly)
+addWorksheet(summaries, sheetName = "gsch4")
+writeData(summaries, sheet = "gsch4", x = gsch4hourly)
+addWorksheet(summaries, sheetName = "gsco2")
+writeData(summaries, sheet = "gsco2", x = gsco2hourly)
+addWorksheet(summaries, sheetName = "mcch4")
+writeData(summaries, sheet = "mcch4", x = mcch4hourly)
+addWorksheet(summaries, sheetName = "mcco2")
+writeData(summaries, sheet = "mcco2", x = mcco2hourly)
+
+output_file <- "summaries.xlsx"
+
+saveWorkbook(summaries, file = output_file)
+```
